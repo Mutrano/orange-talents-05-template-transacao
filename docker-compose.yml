@@ -1,0 +1,67 @@
+version: '3'
+services:
+    transacao:
+        build:
+            dockerfile: ./docker/Dockerfile
+            context: .
+        container_name: transacao
+        ports:
+            - 8082:8081
+        environment: 
+          URL_DB: jdbc:postgresql://postgres-dev:5433/transacao
+          DB_USER: morango
+          DB_PASSWORD: vitamina
+          KAFKA_CONSUMER_GROUP_ID: meu-app
+          KAFKA_AUTO-OFFSET-RESET: latest
+          KAFKA_HOST: kafka:29092
+          TRANSACAO_TOPICO: transacoes
+    
+    postgres-dev:
+        image: "postgres:alpine"
+        expose:
+            - 5433
+        ports: 
+          - 5433:5433
+        volumes:
+          - postgres-dev-volume:/var/lib/postgresql/data
+        environment:
+          POSTGRES_USER: morango
+          POSTGRES_PASSWORD: vitamina
+          POSTGRES_DB: transacao
+          POSTGRES_HOST: postgres
+        command: -p 5433
+
+    transacoes:
+        image: 'zupacademy/transacoes'
+        ports:
+            - 7777:7777
+        depends_on:
+            - kafka
+        environment:
+            SERVER_PORT: 7777
+            LOG_LEVEL: INFO
+            KAFKA_HOST: "kafka:29092"
+            TRANSACTION_DELAY: 5000
+
+    zookeeper:
+        image: "confluentinc/cp-zookeeper:5.2.1"
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+            ZOOKEEPER_SYNC_LIMIT: 2
+        
+    kafka:
+        image: "confluentinc/cp-kafka:5.2.1"
+        ports:
+            - 9092:9092
+        depends_on:
+            - zookeeper
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+volumes:
+    postgres-dev-volume:
