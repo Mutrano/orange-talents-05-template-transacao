@@ -23,7 +23,10 @@ public class EstabelecimentoMensagem {
 	public Estabelecimento paraEstabelecimento() {
 		return new Estabelecimento(nome, cidade, endereco);
 	}
-
+	
+	public static EstabelecimentoMensagem paraMensagem(Estabelecimento estabelecimento) {
+		return new EstabelecimentoMensagem(estabelecimento.getNome(), estabelecimento.getCidade(), estabelecimento.getEndereco());
+	}
 	public String getNome() {
 		return nome;
 	}

@@ -25,11 +25,11 @@ public class TransacaoMensagem {
 	private EstabelecimentoMensagem estabelecimento;
 	private CartaoMensagem cartao;
 	private LocalDateTime efetivadaEm;
-	
+
 	@Deprecated
 	public TransacaoMensagem() {
 	}
-	
+
 	public TransacaoMensagem(UUID id, BigDecimal valor, EstabelecimentoMensagem estabelecimento, CartaoMensagem cartao,
 			LocalDateTime efetivadaem) {
 		this.id = id;
@@ -38,13 +38,20 @@ public class TransacaoMensagem {
 		this.cartao = cartao;
 		this.efetivadaEm = efetivadaem;
 	}
-	
+
 	public Transacao paraTransacao() {
-		
+
 		var paraEstabelecimento = estabelecimento.paraEstabelecimento();
 		var paraCartao = cartao.paraCartao();
-		System.out.println(valor+" "+paraCartao+" "+paraEstabelecimento+" "+efetivadaEm+id);
-		return new Transacao( valor, paraEstabelecimento, paraCartao, efetivadaEm, id);
+		return new Transacao(valor, paraEstabelecimento, paraCartao, efetivadaEm, id);
+	}
+
+	public static TransacaoMensagem paraMensagem(Transacao transacao) {
+		var estabelecimentoMensagem = EstabelecimentoMensagem.paraMensagem(transacao.getEstabelecimento());
+		var cartaoMensagem = CartaoMensagem.paraMensagem(transacao.getCartao());
+
+		return new TransacaoMensagem(transacao.getUuid(), transacao.getValor(), estabelecimentoMensagem, cartaoMensagem,
+				transacao.getEfetivadaem());
 	}
 
 	@Override
@@ -92,6 +99,5 @@ public class TransacaoMensagem {
 	public void setEfetivadaEm(LocalDateTime efetivadaEm) {
 		this.efetivadaEm = efetivadaEm;
 	}
-	
-	
+
 }

@@ -14,11 +14,17 @@ public class Cartao {
 	
 	private UUID uuid;
 	private String email;
-
+	public Cartao() {}
 	public Cartao(UUID uuid, String email) {
 
 		this.uuid = uuid;
 		this.email = email;
+	}
+	public UUID getUuid() {
+		return uuid;
+	}
+	public String getEmail() {
+		return email;
 	}
 
 

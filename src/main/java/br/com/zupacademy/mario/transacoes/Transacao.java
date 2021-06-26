@@ -28,6 +28,9 @@ public class Transacao {
 	private LocalDateTime efetivadaem;
 	private UUID uuid;
 
+	public Transacao() {
+	}
+
 	public Transacao(BigDecimal valor, Estabelecimento estabelecimento, Cartao cartao, LocalDateTime efetivadaem,
 			UUID uuid) {
 		this.valor = valor;
@@ -36,5 +39,28 @@ public class Transacao {
 		this.efetivadaem = efetivadaem;
 		this.uuid = uuid;
 	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public Cartao getCartao() {
+		return cartao;
+	}
+
+	public LocalDateTime getEfetivadaem() {
+		return efetivadaem;
+	}
+
+	public UUID getUuid() {
+		return uuid;
+	}
+	
+	
+	
 
 }

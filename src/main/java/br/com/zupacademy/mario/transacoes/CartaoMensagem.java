@@ -26,6 +26,9 @@ public class CartaoMensagem {
 
 		return new Cartao(id, email);
 	}
+	public  static CartaoMensagem paraMensagem(Cartao cartao) {
+		return new CartaoMensagem(cartao.getUuid(), cartao.getEmail());
+	}
 
 	public UUID getId() {
 		return id;
