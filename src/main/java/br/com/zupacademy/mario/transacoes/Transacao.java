@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,10 +18,10 @@ public class Transacao {
 
 	private BigDecimal valor;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	private Estabelecimento estabelecimento;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	private Cartao cartao;
 
 	private LocalDateTime efetivadaem;
@@ -59,7 +58,12 @@ public class Transacao {
 	public UUID getUuid() {
 		return uuid;
 	}
-	
+	public void setCartao(Cartao cartao) {
+		this.cartao = cartao;
+	}
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
+	}
 	
 	
 

@@ -20,4 +20,7 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long>{
 	
 	@Transactional(readOnly= true)
 	public Page<Transacao> findByCartaoUuid(UUID uuid, Pageable pageable);
+	
+	@Transactional(readOnly = true)
+	public List<Transacao> findByEstabelecimentoNome(String nome);
 }
